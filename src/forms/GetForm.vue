@@ -7,6 +7,7 @@
       <b-col></b-col>
       <b-col cols="5">
         <div>
+          <b-card-group>
           <b-card header-bg-variant="dark" header-text-variant="white" header="Get">
             <b-form @submit.prevent="onSubmit" @reset="onReset" v-if="show">
               <b-form-group id="input-group-1" label="ID:" label-for="input-1">
@@ -16,9 +17,10 @@
               <b-button type="submit" variant="dark">
                 <b-spinner v-show="showSpiner" small type="grow"></b-spinner>Submit
               </b-button>
-              <b-button type="reset" variant="danger" href="/">Back</b-button>
+              <b-button type="reset" variant="danger" to="/">Back</b-button>
             </b-form>
           </b-card>
+          </b-card-group>
         </div>
       </b-col>
       <b-col></b-col>
@@ -34,8 +36,10 @@
 <script >
 import Vue from 'vue';
 import FormService from '../components/FormService.js';
+import { mixins } from '@/components/mixins.js';
 const formService = new FormService();
 export default {
+  mixins: [mixins],
   data() {
     return {
       form: {

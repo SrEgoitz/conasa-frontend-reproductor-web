@@ -65,7 +65,7 @@
                 <b-button type="submit" variant="dark">
                   <b-spinner v-show="showSpiner" small type="grow"></b-spinner>Submit
                 </b-button>
-                <b-button type="reset" variant="danger" href="/">Back</b-button>
+                <b-button type="reset" variant="danger">Back</b-button>
               </b-form>
             </b-card>
           </div>
@@ -76,34 +76,61 @@
   </div>
 </template>
 <script >
-import Vue from 'vue';
-import FormService from '../components/FormService.js';
+import Vue from "vue";
+import FormService from "../components/FormService.js";
+import { mixins } from "@/components/mixins.js";
 const formService = new FormService();
 export default {
+  mixins: [mixins],
   data() {
     return {
       form: {
-        name: '',
-        surname: '',
-        email: '',
-        userName: '',
-        pass: '',
-        fechaNa: '',
+        name: "",
+        surname: "",
+        email: "",
+        userName: "",
+        pass: "",
+        fechaNa: ""
       },
-      msg: '',
+      msg: "",
       showSpiner: false,
-      toastError: '',
-      show: true,
+      toastError: "",
+      show: true
     };
   },
   methods: {
-    onReset() {},
+    onReset() {
+      this.boxTwo = "";
+      this.$bvModal
+        .msgBoxConfirm(
+          "Seguro que quieres volver, se perderan todos los datos",
+          {
+            title: "Please Confirm",
+            size: "sm",
+            buttonSize: "sm",
+            okVariant: "danger",
+            okTitle: "YES",
+            cancelTitle: "NO",
+            footerClass: "p-2",
+            hideHeaderClose: false,
+            centered: true
+          }
+        )
+        .then(value => {
+          if (value == true) {
+            console.log("quiere volver");
+          }
+        })
+        .catch(err => {
+          // An error occurred
+        });
+    },
     onSubmit() {
       this.showSpiner = true;
       const url = process.env.VUE_APP_URL_API_REGISTRO;
 
       fetch(process.env.VUE_APP_URL_API + url, {
-        method: 'POST',
+        method: "POST",
         headers: formService.getHeaders(),
         body: JSON.stringify({
           nombre: this.form.name,
@@ -140,10 +167,8 @@ export default {
           }
         })
         .catch(err => console.error(err));
-
-        
-    },
-  },
+    }
+  }
 };
 </script>
 

@@ -5,6 +5,7 @@ import SingIn from './views/SingIn.vue';
 import Change from './views/Change.vue';
 import Delete from './views/Delete.vue';
 import Get from './views/Get.vue';
+import PrivateHome from './views/PrivateHome.vue';
 
 Vue.use(Router);
 
@@ -36,6 +37,11 @@ export default new Router({
       path: '/get',
       name: 'get',
       component: Get,
+    },
+    {
+      path: '/private',
+      name: 'private',
+      component: PrivateHome,
     },
     {
       path: '/about',
