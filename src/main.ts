@@ -10,12 +10,15 @@ import { BNavbar } from 'bootstrap-vue';
 import { BForm } from 'bootstrap-vue';
 import { BContainer } from 'bootstrap-vue';
 import { BCard } from 'bootstrap-vue';
+import { VBModal } from 'bootstrap-vue';
+
 
 Vue.component('b-toast', BToast);
 Vue.component('b-navbar', BNavbar);
 Vue.component('b-form', BForm);
 Vue.component('b-container', BContainer);
 Vue.component('b-card', BCard);
+Vue.directive('b-modal', VBModal);
 
 
 // import axios from 'axios';

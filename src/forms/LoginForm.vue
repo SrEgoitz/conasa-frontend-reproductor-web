@@ -1,6 +1,11 @@
 <template>
   <div class="hello">
     <h1 v-text="msg"></h1>
+    <!-- <b-button v-b-modal.modal-center>Launch centered modal</b-button>
+
+    <b-modal id="modal-center" centered title="BootstrapVue">
+      <p class="my-4">Vertically centered modal!</p>
+    </b-modal>-->
     <b-container class="bv-example-row">
       <b-card-group>
         <b-card header-bg-variant="dark" header-text-variant="white" header="Presentacion">
@@ -14,7 +19,7 @@
           </b-card-text>
         </b-card>
 
-        <b-card header-bg-variant="dark" header-text-variant="white" header="Login">
+        <b-card header-bg-variant="dark" header-text-variant="white" header="Login" v-if="cardShow">
           <b-form @submit.prevent="onSubmit" @reset="onReset" v-if="show">
             <b-form-group id="input-group-1" label="Email address:" label-for="input-1">
               <b-form-input
@@ -34,17 +39,12 @@
                 required
                 placeholder="Enter password"
               ></b-form-input>
-              <b-button
-                variant="link"
-                href="change"
-                class="text-danger"
-              >¿Has olvidado tu contraseña?</b-button>
+              <b-button variant="link" to="change" class="text-danger">¿Has olvidado tu contraseña?</b-button>
             </b-form-group>
 
             <b-button type="submit" variant="dark">
-              <b-spinner v-show="showSpiner" small type="grow"></b-spinner>Accept
+              <b-spinner v-show="showSpiner" small type="grow"></b-spinner>Login
             </b-button>
-            <b-button type="reset" variant="danger">Reset</b-button>
           </b-form>
         </b-card>
       </b-card-group>
@@ -52,32 +52,37 @@
   </div>
 </template>
 <script>
-import Vue from 'vue';
-import FormService from '../components/FormService.js';
+import Vue from "vue";
+import FormService from "../components/FormService.js";
+import { mixins } from '@/components/mixins.js';
+import router from './../router';
 const formService = new FormService();
 export default {
+  mixins: [mixins],
   data() {
     return {
       form: {
-        email: '',
-        pass: ''
+        email: "trabuduaegoitz@gmail.com",
+        pass: "123456789",
       },
-      msg: 'Bienvenido a la pagina del login de mi aplicaccion',
+      cardShow: true,
+      msg: "Bienvenido a la pagina del login de mi aplicaccion",
       showSpiner: false,
-      show: true,
+      show: true
     };
   },
   methods: {
-    onReset() {},
+    onReset() {
+    },
     onSubmit() {
       this.showSpiner = true;
       const url = process.env.VUE_APP_URL_API_LOGIN;
       fetch(process.env.VUE_APP_URL_API + url, {
-        method: 'POST',
+        method: "POST",
         headers: formService.getHeaders(),
         body: JSON.stringify({
           email: this.form.email,
-          password: this.form.pass,
+          password: this.form.pass
         })
       })
         .then(res => {
@@ -86,6 +91,7 @@ export default {
         .then(data => {
           this.showSpiner = false;
           console.log(data);
+
           if (data.error) {
             this.$bvToast.toast(data.error, {
               title: "Error",
@@ -94,12 +100,20 @@ export default {
               variant: "danger"
             });
           } else {
-            this.$bvToast.toast("Usuario optenido correctamente", {
+            let user = data.message.user;
+            localStorage.setItem("user", JSON.stringify(user));
+            localStorage.setItem("time", data.message.time );
+
+            this.$bvToast.toast("Usuario obtenido correctamente", {
               title: "Success",
               autoHideDelay: 2000,
               variant: "success",
               toaster: "b-toaster-bottom-full"
             });
+            setTimeout(() => {
+              router.push("/private")
+            }, 1000);
+            
           }
         })
         .catch(err => {

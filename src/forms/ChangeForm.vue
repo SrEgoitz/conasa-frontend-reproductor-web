@@ -81,25 +81,27 @@
   </div>
 </template>
 <script >
-import Vue from 'vue';
-import FormService from '../components/FormService.js';
+import Vue from "vue";
+import FormService from "../components/FormService.js";
+import { mixins } from "@/components/mixins.js";
 const formService = new FormService();
 export default {
+  mixins: [mixins],
   data() {
     return {
       form: {
-        id: '',
-        name: '',
-        surname: '',
-        email: '',
-        userName: '',
-        pass: '',
-        fechaNa: '',
+        id: "",
+        name: "",
+        surname: "",
+        email: "",
+        userName: "",
+        pass: "",
+        fechaNa: ""
       },
-      msg: 'Bienvenido a la pagina del change de mi aplicaccion',
+      msg: "Bienvenido a la pagina del change de mi aplicaccion",
       showSpiner: false,
-      toastError: '',
-      show: true,
+      toastError: "",
+      show: true
     };
   },
 
@@ -107,9 +109,9 @@ export default {
     onReset() {},
     onSubmit() {
       this.showSpiner = true;
-      const url = process.env.VUE_APP_URL_API_REGISTRO + '/' + this.form.id;
+      const url = process.env.VUE_APP_URL_API_REGISTRO + "/" + this.form.id;
       fetch(process.env.VUE_APP_URL_API + url, {
-        method: 'PUT',
+        method: "PUT",
         headers: formService.getHeaders(),
         body: JSON.stringify({
           nombre: this.form.name,
@@ -117,8 +119,8 @@ export default {
           email: this.form.email,
           username: this.form.userName,
           password: this.form.pass,
-          fecha_nacimiento: this.form.fechaNa,
-        }),
+          fecha_nacimiento: this.form.fechaNa
+        })
       })
         .then(res => res.json())
         .then(data => {
@@ -126,23 +128,23 @@ export default {
           console.log(data);
           if (data.error) {
             this.$bvToast.toast(data.error, {
-              title: 'Error',
+              title: "Error",
               autoHideDelay: 2000,
-              variant: 'danger',
-              toaster: 'b-toaster-bottom-full',
+              variant: "danger",
+              toaster: "b-toaster-bottom-full"
             });
           } else {
-            this.$bvToast.toast('Usuario cambiado correctamente', {
-              title: 'Success',
+            this.$bvToast.toast("Usuario cambiado correctamente", {
+              title: "Success",
               autoHideDelay: 2000,
-              variant: 'success',
-              toaster: 'b-toaster-bottom-full',
+              variant: "success",
+              toaster: "b-toaster-bottom-full"
             });
           }
         })
         .catch(err => console.error(err));
-    },
-  },
+    }
+  }
 };
 </script>
 
